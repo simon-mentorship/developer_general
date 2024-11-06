@@ -12,13 +12,25 @@ export function add(numbers: string): number {
         throw new Error(`Negatives not allowed: ${negativeNumbers}`);
     }
 
-    // return the sum of numbers when a different delimiter is used
+    // return the sum of numbers when a multiple delimiters are used
     if (numbers.startsWith('//')) {
-        const match = numbers.match(/\/\/\[?(.*?)\]?\n(.*)/);
-        const delimiter = match ? match[1] : ',';
+        const match = numbers.match(/\/\/(\[?.*\]?)*\n(.*)/);
+        let delimiters : string | RegExp = ',';
+        
+        if (match) {
+            const delimiterGroup = match[1]
+                .split(/\[|\]/g)
+                .filter(delimiter => delimiter !== '');
+            if (delimiterGroup.length === 1) {
+                delimiters = delimiterGroup[0];
+            } else {
+                delimiters = new RegExp(delimiterGroup.map(d => d.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'), 'g');
+            }
+        }
+        
         const nums = match ? match[2] : numbers;
         return nums
-            .split(delimiter)
+            .split(delimiters)
             .reduce((acc, num) => acc + parseInt(num), 0);
     }
 

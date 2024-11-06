@@ -50,3 +50,21 @@ test('returns the sum of numbers when a custom delimiter is used', () => {
   expect(add('//[***]\n1***2***3')).toBe(6);
   expect(add('//[|||]\n1|||2|||3')).toBe(6);
 });
+
+// Write a test that checks if the `add` function accepts multiple custom delimiters with the format: `"//[delimiter1][delimiter2]\n"`
+test('returns the sum of numbers when multiple custom delimiters are used', () => {
+  expect(add('//[*][%]\n1*2%3')).toBe(6);
+  expect(add('//[|][?]\n1|2?3')).toBe(6);
+});
+
+// Write a test that checks if the `add` function accepts multiple custom delimiters with any length with the format: `"//[delimiter1][delimiter2]\n"`
+test('returns the sum of numbers when multiple custom delimiters of any length are used', () => {
+  expect(add('//[**][%%]\n1**2%%3')).toBe(6);
+  expect(add('//[|||][???]\n1|||2???3')).toBe(6);
+});
+
+// Write a test that checks if the `add` function accepts multiple custom delimiters with any length and have numbers as part of them where the number cannot be on the edge of a delimiter with the format: `"//[delimiter1][delimiter2]\n"` e.g. //[*1*][%]\n
+test('returns the sum of numbers when multiple custom delimiters with any length and numbers are used', () => {
+  expect(add('//[*1*][%]\n1*1*2%3')).toBe(6);
+  expect(add('//[|2|][?]\n1|2|2?3')).toBe(6);
+});
